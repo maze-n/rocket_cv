@@ -15,6 +15,11 @@ use opencv::{
     imgproc::{gaussian_blur, resize, INTER_CUBIC},
 };
 
+#[get("/")]
+async fn welcome() -> Option<NamedFile> {
+    NamedFile::open(Path::new("readme.md")).await.ok()
+}
+
 #[post(
     "/change-size/<x>/<y>",
     format = "multipart/form-data",
@@ -77,5 +82,5 @@ async fn image_blur(mut form: Form<BlurForm<'_>>) -> Option<NamedFile> {
 
 #[launch]
 fn rocket() -> _ {
-    rocket::build().mount("/", routes![change_size, image_blur])
+    rocket::build().mount("/", routes![welcome, change_size, image_blur])
 }
