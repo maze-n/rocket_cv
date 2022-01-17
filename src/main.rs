@@ -26,8 +26,8 @@ async fn welcome() -> Option<NamedFile> {
     data = "<form>"
 )]
 async fn change_size(x: f64, y: f64, mut form: Form<ResizeForm<'_>>) -> Option<NamedFile> {
-    form.image.persist_to("files/src.jpg").await.unwrap();
-    let src_img = imread("files/src.jpg", -1).unwrap();
+    form.image.persist_to("src.jpg").await.unwrap();
+    let src_img = imread("src.jpg", -1).unwrap();
     let mut dest_img = Mat::default();
 
     resize(
@@ -40,22 +40,15 @@ async fn change_size(x: f64, y: f64, mut form: Form<ResizeForm<'_>>) -> Option<N
     )
     .unwrap();
 
-    imwrite(
-        "files/result.jpg",
-        &dest_img,
-        &opencv::core::Vector::default(),
-    )
-    .unwrap();
+    imwrite("result.jpg", &dest_img, &opencv::core::Vector::default()).unwrap();
 
-    NamedFile::open(Path::new("files/").join("result.jpg"))
-        .await
-        .ok()
+    NamedFile::open(Path::new("").join("result.jpg")).await.ok()
 }
 
 #[post("/blur", format = "multipart/form-data", data = "<form>")]
 async fn image_blur(mut form: Form<BlurForm<'_>>) -> Option<NamedFile> {
-    form.image.persist_to("files/src.jpg").await.unwrap();
-    let src_img = imread("files/src.jpg", -1).unwrap();
+    form.image.persist_to("src.jpg").await.unwrap();
+    let src_img = imread("src.jpg", -1).unwrap();
     let mut dest_img = Mat::default();
 
     gaussian_blur(
@@ -68,16 +61,9 @@ async fn image_blur(mut form: Form<BlurForm<'_>>) -> Option<NamedFile> {
     )
     .unwrap();
 
-    imwrite(
-        "files/result.jpg",
-        &dest_img,
-        &opencv::core::Vector::default(),
-    )
-    .unwrap();
+    imwrite("result.jpg", &dest_img, &opencv::core::Vector::default()).unwrap();
 
-    NamedFile::open(Path::new("files/").join("result.jpg"))
-        .await
-        .ok()
+    NamedFile::open(Path::new("").join("result.jpg")).await.ok()
 }
 
 #[launch]
