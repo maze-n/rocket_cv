@@ -26,8 +26,8 @@ async fn welcome() -> Option<NamedFile> {
     data = "<form>"
 )]
 async fn change_size(x: f64, y: f64, mut form: Form<ResizeForm<'_>>) -> Option<NamedFile> {
-    form.image.persist_to("src.jpg").await.unwrap();
-    let src_img = imread("src.jpg", -1).unwrap();
+    form.image.persist_to("source.jpg").await.unwrap();
+    let src_img = imread("source.jpg", -1).unwrap();
     let mut dest_img = Mat::default();
 
     resize(
@@ -47,8 +47,8 @@ async fn change_size(x: f64, y: f64, mut form: Form<ResizeForm<'_>>) -> Option<N
 
 #[post("/blur", format = "multipart/form-data", data = "<form>")]
 async fn image_blur(mut form: Form<BlurForm<'_>>) -> Option<NamedFile> {
-    form.image.persist_to("src.jpg").await.unwrap();
-    let src_img = imread("src.jpg", -1).unwrap();
+    form.image.persist_to("source.jpg").await.unwrap();
+    let src_img = imread("source.jpg", -1).unwrap();
     let mut dest_img = Mat::default();
 
     gaussian_blur(
